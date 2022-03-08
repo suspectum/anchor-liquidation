@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import { Provider } from 'react-redux';
+import { useChainOptions, WalletProvider } from '@terra-money/wallet-provider';
 
-function App() {
+// project imports
+import { Layout } from 'components';
+import { Dashboard, TxSample } from 'views';
+import { store } from 'reducers/store';
+import { ThemeConfig } from 'theme/theme';
+
+export const App = () => {
+  const chainOptions = useChainOptions();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    chainOptions && (
+      <WalletProvider {...chainOptions}>
+        <Provider store={store}>
+          <ThemeConfig>
+            <Layout>
+              <Dashboard />
+              <TxSample />
+            </Layout>
+          </ThemeConfig>
+        </Provider>
+      </WalletProvider>
+    )
   );
-}
-
-export default App;
+};
